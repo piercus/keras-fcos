@@ -21,8 +21,8 @@ import os
 import sys
 import warnings
 
-import keras
-import keras.preprocessing.image
+import tensorflow.keras as keras
+import tensorflow.keras.preprocessing.image
 import tensorflow as tf
 from datetime import date
 
@@ -97,7 +97,7 @@ def create_models(backbone_retinanet, num_classes, weights, num_gpus=0, freeze_b
     # Keras recommends initialising a multi-gpu model on the CPU to ease weight sharing, and to prevent OOM errors.
     # optionally wrap in a parallel model
     if num_gpus > 1:
-        from keras.utils import multi_gpu_model
+        from tensorflow.keras.utils import multi_gpu_model
         with tf.device('/cpu:0'):
             model = model_with_weights(backbone_retinanet(num_classes, modifier=modifier),
                                        weights=weights, skip_mismatch=True)

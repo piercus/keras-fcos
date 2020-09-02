@@ -15,7 +15,7 @@ limitations under the License.
 """
 
 import tensorflow as tf
-import keras.backend as K
+import tensorflow.keras.backend as K
 
 
 def focal(alpha=0.25, gamma=2.0):

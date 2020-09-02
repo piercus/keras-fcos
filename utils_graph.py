@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-import keras.backend as K
+import tensorflow.keras.backend as K
 import tensorflow as tf
 
 
@@ -105,4 +105,4 @@ def resize_images(images, size, method='bilinear', align_corners=False):
         'bicubic': tf.image.ResizeMethod.BICUBIC,
         'area': tf.image.ResizeMethod.AREA,
     }
-    return tf.image.resize_images(images, size, methods[method], align_corners)
+    return tf.image.resize(images, size, methods[method], align_corners)

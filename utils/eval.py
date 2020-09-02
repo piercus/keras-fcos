@@ -17,7 +17,7 @@ limitations under the License.
 from utils.compute_overlap import compute_overlap
 from utils.visualization import draw_detections, draw_annotations
 
-import keras
+import tensorflow.keras as keras
 import numpy as np
 import os
 import pickle
@@ -284,7 +284,7 @@ if __name__ == '__main__':
     )
     model_path = 'snapshots/2019-08-25/resnet101_pascal_07_0.7352.h5'
     # load retinanet model
-    import keras.backend as K
+    import tensorflow.keras.backend as K
     K.clear_session()
     K.set_learning_phase(1)
     model = models.load_model(model_path, backbone_name='resnet101')
