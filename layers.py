@@ -235,7 +235,7 @@ def filter_detections(
         nms=True,
         score_threshold=0.05,
         max_detections=300,
-        nms_threshold=0.8
+        nms_threshold=0.5
 ):
     """
     Filter detections using the boxes and classification values.
@@ -390,7 +390,7 @@ class FilterDetections(keras.layers.Layer):
         self.max_detections = max_detections
         self.parallel_iterations = parallel_iterations
         super(FilterDetections, self).__init__(**kwargs)
-
+    
     def call(self, inputs, **kwargs):
         """
         Constructs the NMS graph.

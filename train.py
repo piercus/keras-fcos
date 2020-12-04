@@ -32,6 +32,8 @@ from callbacks import RedirectModel, Evaluate
 from models.retinanet import retinanet_bbox
 from generators.csv_generator import CSVGenerator
 from generators.voc_generator import PascalVocGenerator
+from generators.coco_generator import CocoGenerator
+
 from utils.anchors import make_shapes_callback
 from utils.config import read_config_file, parse_anchor_parameters
 from utils.keras_version import check_keras_version
@@ -74,7 +76,7 @@ def model_with_weights(model, weights, skip_mismatch):
     return model
 
 
-def create_models(backbone_retinanet, num_classes, weights, num_gpus=0, freeze_backbone=False, lr=1e-5, config=None):
+def create_models(backbone_retinanet, num_classes, weights, num_gpus=0, freeze_backbone=False, lr=1e-5, config=None, nms_threshold=0.5):
     """
     Creates three models (model, training_model, prediction_model).
 
@@ -108,7 +110,7 @@ def create_models(backbone_retinanet, num_classes, weights, num_gpus=0, freeze_b
         training_model = model
 
     # make prediction model
-    prediction_model = retinanet_bbox(model=model)
+    prediction_model = retinanet_bbox(model=model, nms_threshold=nms_threshold)
 
     # compile model
     training_model.compile(
@@ -349,6 +351,8 @@ def parse_args(args):
     parser.add_argument('--multi-gpu-force', help='Extra flag needed to enable (experimental) multi-gpu support.',
                         action='store_true')
     parser.add_argument('--epochs', help='Number of epochs to train.', type=int, default=50)
+    parser.add_argument('--nms-threshold', help='Non max suppression threshold', type=float, default=0.8)
+    
     parser.add_argument('--steps', help='Number of steps per epoch.', type=int, default=10000)
     parser.add_argument('--lr', help='Learning rate.', type=float, default=1e-4)
     parser.add_argument('--snapshot-path',
@@ -427,7 +431,7 @@ def main(args=None):
         # default to imagenet if nothing else is specified
         if weights is None and args.imagenet_weights:
             weights = backbone.download_imagenet()
-
+        
         print('Creating model, this may take a second...')
         model, training_model, prediction_model = create_models(
             backbone_retinanet=backbone.retinanet,
@@ -436,6 +440,7 @@ def main(args=None):
             num_gpus=args.num_gpus,
             freeze_backbone=args.freeze_backbone,
             lr=args.lr,
+            nms_threshold= args.nms_threshold,
             config=args.config
         )
 
