@@ -390,7 +390,7 @@ class FilterDetections(keras.layers.Layer):
         self.max_detections = max_detections
         self.parallel_iterations = parallel_iterations
         super(FilterDetections, self).__init__(**kwargs)
-
+    
     def call(self, inputs, **kwargs):
         """
         Constructs the NMS graph.

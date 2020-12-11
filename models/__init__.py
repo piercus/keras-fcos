@@ -89,7 +89,7 @@ def load_model(filepath, backbone_name='resnet50'):
     return models.load_model(filepath, custom_objects=backbone(backbone_name).custom_objects)
 
 
-def convert_model(model, nms=True, class_specific_filter=True, anchor_params=None):
+def convert_model(model, nms=True, class_specific_filter=True, anchor_params=None, nms_threshold=0.5):
     """ Converts a training model to an inference model.
 
     Args
@@ -107,7 +107,7 @@ def convert_model(model, nms=True, class_specific_filter=True, anchor_params=Non
     """
     from .retinanet import retinanet_bbox
     return retinanet_bbox(model=model, nms=nms, class_specific_filter=class_specific_filter,
-                          anchor_params=anchor_params)
+                          anchor_params=anchor_params, nms_threshold=nms_threshold)
 
 
 def assert_training_model(model):

@@ -343,6 +343,7 @@ def retinanet_bbox(
         class_specific_filter=True,
         name='retinanet-bbox',
         anchor_params=None,
+        nms_threshold=0.5,
         **kwargs
 ):
     """
@@ -398,7 +399,8 @@ def retinanet_bbox(
     detections = layers.FilterDetections(
         nms=nms,
         class_specific_filter=class_specific_filter,
-        name='filtered_detections'
+        name='filtered_detections',
+        nms_threshold=nms_threshold
     )([boxes, classification, centerness])
 
     # construct the model
